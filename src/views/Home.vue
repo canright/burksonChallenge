@@ -29,7 +29,7 @@ This small client-side only application is my response a recruitment challenge o
 
 Each of these 3 challenges are addressed by a page (one, two, three) of this response.
 
-## Technology Stack
+#### Technology Stack
 
 - Typescript, Javascript, ES6, JSON, LESS
 - Vue
