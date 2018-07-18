@@ -29,20 +29,20 @@ This small client-side only application is my response a recruitment challenge o
 
 Each of these 3 challenges are addressed by a page (one, two, three) of this response.
 
-#### Stack
+## Technology Stack
 
-This app is implemented with this technology stack:
-
-- git / Github
-- Typescript, JS ES7
+- Typescript, Javascript, ES6, JSON, LESS
 - Vue
-- AWS S3
-- REST
 - Markdown
+- Node, NPM, GIT, Webpack
+
+#### Source Code Repository at [github.com/canright](https://github.com/canright/BurksonChallenge)
+
+#### Hosted at [burkson.canright.net](http:burkson.canright.net)
 
 #### Mocked REST API
 
-Iff this client side (only) application were fully realized it would have an associated server that exposed a REST API to fetch from a database:
+If this client side (only) application were fully realized it would have an associated server that exposed a REST API to fetch from a database:
 
 - a JSON list of houses for sale for Challenge 1 ( GET '/houses')
 - a JSON list of employees for Challenge 3 (GET '/employees')
