@@ -39,7 +39,7 @@
         <tr v-for="employee in employees" :key="employee.name">
           <td>{{ employee.name }}</td>
           <td>{{ employee.title }}</td>
-          <td><img :src=employee.portrait></td>
+          <td><img :src="employee.portrait"></td>
         </tr>
       </tbody>
     </table>
@@ -49,42 +49,9 @@
 
 <script lang="ts">
 
-const expositionMd = `
-##### The Challenge
-
-Display a table of "Employees” from a JSON source
-that when displayed on a desktop device looks like a table,
-but looks more like a set of tiles/cards when shown on a smaller mobile device.
-Bonus: Use a profile image as part of the data to display.
-
-##### Implementation Notes
-
-This appears to me to primarily be an exercise in CSS3 media queries.  But, I can interpret the tiles/cards thing in two different formats:
-
-A. Show a column of cards that fill the width of the viewport.
-B. Show cards that float to fill each row of the space.
-
-So, I implemented both.
-
-For viewport widths up to 400px, we get a column of cards each as wide as possible within the viewport (format A).
-
-For viewport widths up to 640px, we get small cards that float as needed (format B);
-
-For viewport widths greater than 640px, we get the grid display with a very small thumbnail of the portrait image.
-It needs to be a small thumbnail here because a larger image forces each row to be too high and looks pretty ugly.
-
-It is ironic that the smaller the display, the larger the image.
-There is a good solution, which I have not implemented because it is out of scope.
-That is, for the grid and floating card views, to treat the small images shown as clickable thumbnails that popup a full-sized image.
-
-The float format has a notable weakness:  for most viewport widths, the margin on the right side of each row of thumbnails is too wide.
-This is because the dom engine wraps to the next row when there is insuficient space for for another thumbnail.
-This weakness might be resolved by:
-
-- Using css media queries to layout each 'break' (eg: one layout for 3 thumbnail rows and another for 4 thumbnail rows)
-- size the thumbnails based on the viewport width (which would be a different, but probably acceptable behavior.
-- adjust the margins between thumbnails in a row (probably with javascript).
-`;
+import { Component, Vue } from 'vue-property-decorator';
+import VueMarkdown from 'vue-markdown';
+import axios from 'axios';
 
 interface Employee {
   name: string;
@@ -92,36 +59,32 @@ interface Employee {
   portrait: string;
 }
 
-const fetchEmployees = (): Employee[] => {
-  const employeesJson = `[
-    { "name": "Jim Canright",   "title": "Senior Software Engineer" },
-    { "name": "Jerry Garcia",   "title": "Lead Guitar" },
-    { "name": "Bob Weir",       "title": "Rythym Guitar" },
-    { "name": "David Lindley",  "title": "Strings" },
-    { "name": "Bob Dylan",      "title": "Songwriter" },
-    { "name": "John Lennon",    "title": "Inspiration" }
-  ]`;
-  return JSON.parse(employeesJson);
-};
-
-import { Component, Vue } from 'vue-property-decorator';
-import VueMarkdown from 'vue-markdown';
-
 @Component({
   components: {
     VueMarkdown,
   },
 })
 class ChallengeThree extends Vue {
-  public exposition: string = expositionMd;
-  public employees: Employee[];
-  constructor() {
-    super();
-    this.employees = fetchEmployees().map((e: Employee) => {
-      const id = e.name.replace(/ /g , '_').toLowerCase();
-      e.portrait = './img/employees/' + id + '.jpg';
-      return e;
+  public exposition = '';
+  public employees: Employee[] = [];
+
+  private mounted() {
+    axios.get<string>('/markdown/ChallengeThree.md')
+    .then ( ( resp  ) => { this.exposition = resp.data; })
+    .catch( ( error ) => { this.exposition = error;  });
+
+    axios.get<Employee[]>('/api/employees')
+    .then( ( resp ) => {
+      this.employees = resp.data.map((e: Employee) => {
+        const id = e.name.replace(/ /g , '_').toLowerCase();
+        e.portrait = './img/employees/' + id + '.jpg';
+        return e;
+      });
+    })
+    .catch( ( error ) => {
+      this.employees = [];
     });
+
   }
 }
 

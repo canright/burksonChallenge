@@ -1,0 +1,8 @@
+[
+{ "name": "Jim Canright",   "title": "Senior Software Engineer" },
+{ "name": "Jerry Garcia",   "title": "Lead Guitar" },
+{ "name": "Bob Weir",       "title": "Rythym Guitar" },
+{ "name": "David Lindley",  "title": "Strings" },
+{ "name": "Bob Dylan",      "title": "Songwriter" },
+{ "name": "John Lennon",    "title": "Inspiration" }
+]
